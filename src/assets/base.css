@@ -33,6 +33,10 @@
   --color-background-soft: var(--white-soft);
   --color-background-mute: var(--white-mute);
 
+  --color-background-reverse: var(--black);
+  --color-background-reverse-soft: var(--black-soft);
+  --color-background-reverse-mute: var(--black-mute);
+
   --color-border: var(--divider-light-2);
   --color-border-hover: var(--divider-light-1);
 
@@ -49,6 +53,10 @@
     --color-background: var(--black);
     --color-background-soft: var(--black-soft);
     --color-background-mute: var(--black-mute);
+
+    --color-reverse-background: var(--white);
+    --color-reverse-background-soft: var(--white-soft);
+    --color-reverse-background-mute: var(--white-mute);
 
     --color-border: var(--divider-dark-2);
     --color-border-hover: var(--divider-dark-1);

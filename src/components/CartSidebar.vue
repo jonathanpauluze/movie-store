@@ -3,6 +3,7 @@ import { computed, onMounted, onUnmounted, ref, defineProps, defineEmits } from 
 import { useStore } from 'vuex'
 import { RouterLink } from 'vue-router'
 import AppTooltip from './AppTooltip.vue'
+import AppButton from './AppButton.vue'
 import { PhTrash } from '@phosphor-icons/vue'
 
 type PropsType = { open: boolean }
@@ -14,6 +15,7 @@ const emit = defineEmits<EmitType>()
 const store = useStore()
 const items = computed(() => store.state.cart.items)
 const total = computed(() => store.getters['cart/cartTotal'])
+const cartCount = computed(() => store.getters['cart/cartCount'])
 const sidebarRef = ref<HTMLElement>()
 
 function close() {
@@ -57,34 +59,39 @@ onUnmounted(() => {
   <aside class="sidebar" :class="{ open: props.open }" ref="sidebarRef">
     <div class="sidebar-header">
       <h2>Meu Carrinho</h2>
-      <button class="clear-btn" @click="clearCart">Esvaziar</button>
+      <AppButton v-if="cartCount > 0" variant="link" @click="clearCart">Esvaziar</AppButton>
     </div>
 
     <div class="sidebar-content">
       <div v-if="items.length === 0" class="empty">Carrinho vazio</div>
 
-      <ul v-else>
+      <ul class="cart-item-list" v-else>
         <li v-for="item in items" :key="item.id" class="cart-item">
           <img :src="getPoster(item.poster_path)" alt="" />
 
-          <div class="info">
-            <p class="title">{{ item.title }}</p>
+          <p class="title" :title="item.title">{{ item.title }}</p>
 
-            <p class="price">R$ 9,99</p>
+          <p>1</p>
 
-            <AppTooltip text="Remover do carrinho" position="bottom">
-              <button aria-label="Remover do carrinho" class="remove-btn" @click="remove(item.id)">
-                <PhTrash size="20" weight="fill" title="Remover do carrinho" />
-              </button>
-            </AppTooltip>
-          </div>
+          <p class="price">R$ 9,99</p>
+
+          <AppTooltip text="Remover do carrinho" position="left">
+            <button aria-label="Remover do carrinho" class="remove-btn" @click="remove(item.id)">
+              <PhTrash size="20" weight="fill" title="Remover do carrinho" />
+            </button>
+          </AppTooltip>
         </li>
       </ul>
     </div>
 
     <div class="sidebar-footer" v-if="items.length > 0">
-      <div class="total">Total: R$ {{ total.toFixed(2) }}</div>
-      <RouterLink to="/checkout" class="checkout-btn" @click="close"> Finalizar compra </RouterLink>
+      <div class="total">
+        Total: <strong>R$ {{ total.toFixed(2) }}</strong>
+      </div>
+
+      <RouterLink to="/checkout" class="checkout-link">
+        <AppButton fullWidth size="lg" @click="close">Finalizar compra</AppButton>
+      </RouterLink>
     </div>
   </aside>
 </template>
@@ -119,32 +126,47 @@ onUnmounted(() => {
 
 .sidebar-content {
   flex: 1;
-  overflow-y: auto;
   padding: 1rem;
+}
+
+.cart-item-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .cart-item {
   display: flex;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
 }
 
 .cart-item img {
-  width: 60px;
-  height: auto;
-  margin-right: 0.75rem;
-}
-
-.info {
-  flex: 1;
+  width: 40px;
+  height: 40px;
+  background-color: #ccc;
 }
 
 .title {
+  flex: 1;
   font-weight: 600;
   margin-bottom: 0.25rem;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  max-height: calc(1.2em * 2);
 }
 
 .price {
   color: var(--color-text);
+  font-weight: bold;
 }
 
 .remove-btn {
@@ -160,24 +182,26 @@ onUnmounted(() => {
 }
 
 .sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1rem;
   border-top: 1px solid var(--color-border);
 }
 
-.checkout-btn {
-  display: block;
-  margin-top: 1rem;
-  background: var(--color-primary);
-  color: white;
-  text-align: center;
-  padding: 0.75rem;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: background 0.2s ease;
+.total {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 
-  &:hover {
-    background: var(--color-primary-hover);
+  strong {
+    font-size: 1.25rem;
+    font-weight: bold;
   }
+}
+
+.checkout-link {
+  text-decoration: none;
 }
 
 .empty {

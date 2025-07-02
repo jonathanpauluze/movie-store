@@ -23,7 +23,7 @@ defineProps<PropsType>()
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    background-color: var(--color-border);
+    background-color: var(--color-background-reverse-soft);
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
@@ -57,7 +57,7 @@ defineProps<PropsType>()
         left: 50%;
         transform: translateX(-50%);
         border-width: 5px 5px 0 5px;
-        border-color: var(--color-border) transparent transparent transparent;
+        border-color: var(--color-background-reverse-soft) transparent transparent transparent;
       }
     }
   }
@@ -73,7 +73,7 @@ defineProps<PropsType>()
         left: 50%;
         transform: translateX(-50%);
         border-width: 0 5px 5px 5px;
-        border-color: transparent transparent var(--color-border) transparent;
+        border-color: transparent transparent var(--color-background-reverse-soft) transparent;
       }
     }
   }
@@ -89,7 +89,7 @@ defineProps<PropsType>()
         top: 50%;
         transform: translateY(-50%);
         border-width: 5px 0 5px 5px;
-        border-color: transparent transparent transparent var(--color-border);
+        border-color: transparent transparent transparent var(--color-background-reverse-soft);
       }
     }
   }
@@ -105,7 +105,7 @@ defineProps<PropsType>()
         top: 50%;
         transform: translateY(-50%);
         border-width: 5px 5px 5px 0;
-        border-color: transparent var(--color-border) transparent transparent;
+        border-color: transparent var(--color-background-reverse-soft) transparent transparent;
       }
     }
   }
