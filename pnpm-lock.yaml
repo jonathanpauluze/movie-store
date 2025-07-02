@@ -14,6 +14,9 @@ dependencies:
   vue-router:
     specifier: ^4.5.1
     version: 4.5.1(vue@3.5.17)
+  vuex:
+    specifier: ^4.0.2
+    version: 4.0.2(vue@3.5.17)
 
 devDependencies:
   '@tsconfig/node22':
@@ -3519,6 +3522,15 @@ packages:
       '@vue/server-renderer': 3.5.17(vue@3.5.17)
       '@vue/shared': 3.5.17
       typescript: 5.8.2
+
+  /vuex@4.0.2(vue@3.5.17):
+    resolution: {integrity: sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q==}
+    peerDependencies:
+      vue: ^3.0.2
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.17(typescript@5.8.2)
+    dev: false
 
   /w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
