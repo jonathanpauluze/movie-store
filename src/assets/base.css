@@ -1,4 +1,5 @@
 :root {
+  /* Definição de cores */
   --white: #ffffff;
   --white-soft: #f8f8f8;
   --white-mute: #f2f2f2;
@@ -7,18 +8,27 @@
   --black-soft: #222222;
   --black-mute: #282828;
 
-  --indigo: #2c3e50;
-
   --divider-light-1: rgba(60, 60, 60, 0.29);
   --divider-light-2: rgba(60, 60, 60, 0.12);
   --divider-dark-1: rgba(84, 84, 84, 0.65);
   --divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --shadow-light-1: rgba(0, 0, 0, 0.4);
+  --shadow-dark-1: rgba(18, 18, 18, 0.4);
+
+  --heading-light: #293844;
 
   --text-light-1: var(--indigo);
   --text-light-2: rgba(60, 60, 60, 0.66);
   --text-dark-1: var(--white);
   --text-dark-2: rgba(235, 235, 235, 0.64);
 
+  /* Definição de tema (global - light e dark) */
+  --color-primary: #6b46c1;
+  --color-primary-hover: #7e5ec9;
+  --color-danger: #e53e3e;
+
+  /* Definição de tema (light) */
   --color-background: var(--white);
   --color-background-soft: var(--white-soft);
   --color-background-mute: var(--white-mute);
@@ -26,14 +36,16 @@
   --color-border: var(--divider-light-2);
   --color-border-hover: var(--divider-light-1);
 
-  --color-heading: var(--text-light-1);
-  --color-text: var(--text-light-1);
+  --color-shadow: var(--shadow-light-1);
 
-  --section-gap: 160px;
+  --color-heading: var(--heading-light);
+  --color-text: var(--text-light-1);
+  --color-text-light: var(--text-light-2);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Definição de tema (dark) */
     --color-background: var(--black);
     --color-background-soft: var(--black-soft);
     --color-background-mute: var(--black-mute);
@@ -41,8 +53,11 @@
     --color-border: var(--divider-dark-2);
     --color-border-hover: var(--divider-dark-1);
 
+    --color-shadow: var(--shadow-dark-1);
+
     --color-heading: var(--text-dark-1);
-    --color-text: var(--text-dark-2);
+    --color-text: var(--text-dark-1);
+    --color-text-light: var(--text-dark-2);
   }
 }
 
