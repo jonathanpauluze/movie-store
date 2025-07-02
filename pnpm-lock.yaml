@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@phosphor-icons/vue':
+    specifier: ^2.2.1
+    version: 2.2.1(vue@3.5.17)
   vue:
     specifier: ^3.5.17
     version: 3.5.17(typescript@5.8.2)
@@ -829,6 +832,15 @@ packages:
   /@one-ini/wasm@0.1.1:
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
     dev: true
+
+  /@phosphor-icons/vue@2.2.1(vue@3.5.17):
+    resolution: {integrity: sha512-3RNg1utc2Z5RwPKWFkW3eXI/0BfQAwXgtFxPUPeSzi55jGYUq16b+UqcgbKLazWFlwg5R92OCLKjDiJjeiJcnA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      vue: '>=3.2.39'
+    dependencies:
+      vue: 3.5.17(typescript@5.8.2)
+    dev: false
 
   /@pkgjs/parseargs@0.11.0:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
