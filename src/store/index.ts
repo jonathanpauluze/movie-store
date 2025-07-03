@@ -1,10 +1,12 @@
 import { createStore } from 'vuex'
-import cart from './modules/cart'
 import toast from './modules/toast'
+import cart from './modules/cart'
+import favorites from './modules/favorites'
 
 export default createStore({
   modules: {
-    cart,
     toast,
+    cart,
+    favorites,
   },
 })

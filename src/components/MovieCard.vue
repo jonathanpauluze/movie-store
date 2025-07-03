@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 import AppButton from './AppButton.vue'
-import { PhStar } from '@phosphor-icons/vue'
+import { PhStar, PhHeart } from '@phosphor-icons/vue'
 import { useGenres } from '@/composables/useGenres'
 import { getPrice } from '@/utils/getPrice'
+
 import { formatCurrency } from '@/utils/formatCurrency'
 import { type Movie } from '@/types/movie'
 
@@ -13,9 +15,15 @@ const props = defineProps<PropsType>()
 type EmitType = (event: 'add-to-cart', movie: Movie) => void
 const emit = defineEmits<EmitType>()
 
+const store = useStore()
 const { resolve } = useGenres()
 const genres = computed(() => resolve(props.movie.genre_ids))
 const price = computed(() => formatCurrency(getPrice(props.movie.id)))
+const isFavorited = computed(() => store.getters['favorites/isFavorite'](props.movie.id))
+
+function toggleFavorite() {
+  store.commit('favorites/toggleFavorite', props.movie)
+}
 
 function getPoster(path: string) {
   return `https://image.tmdb.org/t/p/w300${path}`
@@ -51,11 +59,21 @@ function getPoster(path: string) {
         Adicionar
       </AppButton>
     </div>
+
+    <button
+      class="favorite-btn"
+      :class="{ 'is-favorited': isFavorited }"
+      :aria-label="isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'"
+      @click="toggleFavorite"
+    >
+      <PhHeart :weight="isFavorited ? 'fill' : 'regular'" size="20" />
+    </button>
   </div>
 </template>
 
 <style scoped scss>
 .card {
+  position: relative;
   background-color: var(--color-background-mute);
   border-radius: 6px;
   overflow: hidden;
@@ -66,6 +84,26 @@ function getPoster(path: string) {
 
   &:hover {
     transform: translateY(-2px);
+  }
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-background-mute);
+  color: var(--color-text-light);
+  cursor: pointer;
+
+  &.is-favorited {
+    color: var(--color-danger);
   }
 }
 

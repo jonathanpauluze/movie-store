@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import MovieCard from '@/components/MovieCard.vue'
+import { createStore } from 'vuex'
 import type { Movie } from '@/types/movie'
 
 const mockMovie: Movie = {
@@ -20,27 +21,44 @@ vi.mock('@/composables/useGenres', () => ({
 }))
 
 describe('MovieCard', () => {
-  it('renderiza o título do filme', () => {
-    const wrapper = mount(MovieCard, {
-      props: { movie: mockMovie },
+  let wrapper: ReturnType<typeof mount>
+  let store: ReturnType<typeof createStore>
+
+  beforeEach(() => {
+    store = createStore({
+      modules: {
+        favorites: {
+          namespaced: true,
+          state: () => ({ items: [] }),
+          getters: {
+            isFavorite: () => () => false,
+            favoritesCount: () => 0,
+          },
+          mutations: {
+            toggleFavorite: vi.fn(),
+            removeFavorite: vi.fn(),
+          },
+        },
+      },
     })
 
+    wrapper = mount(MovieCard, {
+      props: { movie: mockMovie },
+      global: {
+        plugins: [store],
+      },
+    })
+  })
+
+  it('renderiza o título do filme', () => {
     expect(wrapper.text()).toContain('The Test Movie - A Journey Begins')
   })
 
   it('exibe o botão de adicionar', () => {
-    const wrapper = mount(MovieCard, {
-      props: { movie: mockMovie },
-    })
-
     expect(wrapper.find('button').text()).toContain('Adicionar')
   })
 
   it('emite evento ao clicar no botão', async () => {
-    const wrapper = mount(MovieCard, {
-      props: { movie: mockMovie },
-    })
-
     await wrapper.find('button').trigger('click')
     expect(wrapper.emitted()['add-to-cart']).toBeTruthy()
   })
