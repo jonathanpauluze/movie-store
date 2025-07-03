@@ -90,6 +90,10 @@ function getPoster(path: string) {
   padding: 1rem;
   font-weight: bold;
   border-bottom: 1px solid var(--color-border);
+
+  h2 {
+    font-size: 1.125rem;
+  }
 }
 
 .sidebar-content {
