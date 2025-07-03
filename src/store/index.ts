@@ -10,3 +10,5 @@ export default createStore({
     favorites,
   },
 })
+
+export type * from './types'

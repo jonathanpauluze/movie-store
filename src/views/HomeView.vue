@@ -12,21 +12,7 @@ const error = ref('')
 const store = useStore()
 
 function addToCart(movie: Movie) {
-  const alreadyAdded = store.state.cart.items.some((item: Movie) => item.id === movie.id)
-
-  if (alreadyAdded) {
-    store.dispatch('toast/showToast', {
-      message: `"${movie.title}" já está no carrinho.`,
-      type: 'warning',
-    })
-    return
-  }
-
-  store.commit('cart/addToCart', movie)
-  store.dispatch('toast/showToast', {
-    message: `"${movie.title}" adicionado ao carrinho!`,
-    type: 'success',
-  })
+  store.dispatch('cart/tryAddToCart', movie)
 }
 
 onMounted(async () => {

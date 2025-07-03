@@ -2,14 +2,14 @@
 import SearchBar from './SearchBar.vue'
 import { PhHeart, PhShoppingCart } from '@phosphor-icons/vue'
 
-const emit = defineEmits(['toggle-cart'])
+const emit = defineEmits(['toggle-cart', 'toggle-favorites'])
 
 const toggleCart = () => {
   emit('toggle-cart')
 }
 
 const toggleFavorites = () => {
-  console.log('Abrir favoritos')
+  emit('toggle-favorites')
 }
 </script>
 
