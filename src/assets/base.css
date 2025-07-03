@@ -30,6 +30,7 @@
   --color-success: #4caf50;
   --color-danger: #e53e3e;
   --color-warning: #ff9800;
+  --color-backdrop: rgba(0, 0, 0, 0.4);
 
   /* Definição de tema (light) */
   --color-background: var(--white);

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import AppSidebar from './AppSidebar.vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { RouterLink } from 'vue-router'
 import AppTooltip from './AppTooltip.vue'
@@ -9,16 +10,17 @@ import { getPrice } from '@/utils/getPrice'
 import { formatCurrency } from '@/utils/formatCurrency'
 
 type PropsType = { open: boolean }
-const props = defineProps<PropsType>()
+
+defineProps<PropsType>()
 
 type EmitType = (event: 'close') => void
+
 const emit = defineEmits<EmitType>()
 
 const store = useStore()
 const items = computed(() => store.state.cart.items)
 const total = computed(() => store.getters['cart/cartTotal'])
 const cartCount = computed(() => store.getters['cart/cartCount'])
-const sidebarRef = ref<HTMLElement>()
 
 function close() {
   emit('close')
@@ -35,30 +37,10 @@ function clearCart() {
 function getPoster(path: string) {
   return `https://image.tmdb.org/t/p/w200${path}`
 }
-
-function handleClickOutside(event: MouseEvent) {
-  if (props.open && sidebarRef.value && !sidebarRef.value.contains(event.target as Node)) {
-    close()
-  }
-}
-
-function handleEsc(e: KeyboardEvent) {
-  if (e.key === 'Escape') close()
-}
-
-onMounted(() => {
-  window.addEventListener('mousedown', handleClickOutside)
-  window.addEventListener('keydown', handleEsc)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('mousedown', handleClickOutside)
-  window.removeEventListener('keydown', handleEsc)
-})
 </script>
 
 <template>
-  <aside class="sidebar" :class="{ open: props.open }" ref="sidebarRef">
+  <AppSidebar :open="open" @close="$emit('close')">
     <div class="sidebar-header">
       <h2>Meu Carrinho</h2>
       <AppButton v-if="cartCount > 0" variant="link" @click="clearCart" class="clear-btn"
@@ -97,47 +79,29 @@ onUnmounted(() => {
         <AppButton fullWidth size="lg" @click="close">Finalizar compra</AppButton>
       </RouterLink>
     </div>
-  </aside>
+  </AppSidebar>
 </template>
 
 <style scoped scss>
-.sidebar {
-  position: fixed;
-  top: 0;
-  right: -400px;
-  width: 350px;
-  height: 100vh;
-  background: var(--color-background-soft);
-  box-shadow: -2px 0 5px var(--color-shadow);
-  transition: right 0.3s ease;
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  font-weight: bold;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sidebar-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.cart-item-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 1000;
-
-  &.open {
-    right: 0;
-  }
-
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    font-weight: bold;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .sidebar-content {
-    flex: 1;
-    padding: 1rem;
-  }
-
-  .cart-item-list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
+  gap: 0.75rem;
 }
 
 .cart-item {
