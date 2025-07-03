@@ -11,18 +11,19 @@ const mockItems = [
 ]
 
 const store = createStore({
-  state: {
+  modules: {
     cart: {
-      items: mockItems,
+      namespaced: true,
+      state: () => ({ items: mockItems }),
+      getters: {
+        cartTotal: () => 19.98,
+        cartCount: () => mockItems.length,
+      },
+      mutations: {
+        removeFromCart: vi.fn(),
+        clearCart: vi.fn(),
+      },
     },
-  },
-  getters: {
-    'cart/cartTotal': () => 19.98,
-    'cart/cartCount': () => mockItems.length,
-  },
-  mutations: {
-    'cart/removeFromCart': vi.fn(),
-    'cart/clearCart': vi.fn(),
   },
 })
 
