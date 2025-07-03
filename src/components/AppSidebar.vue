@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch, nextTick, defineProps, defineEmits } from 'vue'
+import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 
 type PropsType = {
   open: boolean
