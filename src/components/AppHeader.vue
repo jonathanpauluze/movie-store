@@ -17,7 +17,9 @@ const toggleFavorites = () => {
   <header class="header">
     <div class="logo">LOGO</div>
 
-    <SearchBar />
+    <div class="search">
+      <SearchBar />
+    </div>
 
     <div class="actions">
       <button aria-label="Favoritos" @click="toggleFavorites">
@@ -34,8 +36,10 @@ const toggleFavorites = () => {
 <style scoped scss>
 .header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding: 1rem;
   background-color: var(--color-background-soft);
   border-bottom: 1px solid var(--color-border);
@@ -44,20 +48,42 @@ const toggleFavorites = () => {
 .logo {
   font-weight: bold;
   font-size: 1.2rem;
+  order: 1;
+  flex-shrink: 0;
 }
 
 .actions {
   display: flex;
-  align-items: center;
   gap: 0.5rem;
+  order: 2;
+  flex-shrink: 0;
 
   button {
-    padding: 0.5rem 0.75rem;
-    border: 0;
-    border-radius: 0.25rem;
-    background-color: transparent;
-    color: var(--color-text);
+    background: transparent;
+    border: none;
     cursor: pointer;
+    color: var(--color-text);
+  }
+}
+
+.search {
+  flex: 1 1 100%;
+  order: 3;
+
+  input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .search {
+    order: 2;
+    flex: 1 1 auto;
+    max-width: 400px;
+  }
+
+  .actions {
+    order: 3;
   }
 }
 </style>
