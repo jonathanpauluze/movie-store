@@ -114,19 +114,23 @@ onUnmounted(() => {
   position: fixed;
   top: 0;
   height: 100vh;
-  width: 350px;
+  width: 85%;
   background-color: var(--color-background-soft);
   box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
   z-index: 1000;
-}
 
-.sidebar.right {
-  right: 0;
-}
+  @media (min-width: 768px) {
+    width: 350px;
+  }
 
-.sidebar.left {
-  left: 0;
+  &.right {
+    right: 0;
+  }
+
+  &.left {
+    left: 0;
+  }
 }
 
 .fade-enter-active,
@@ -155,7 +159,6 @@ onUnmounted(() => {
   transition: transform 0.3s ease;
 }
 
-/* Slide da esquerda */
 .slide-left-enter-from,
 .slide-left-leave-to {
   transform: translateX(-100%);
