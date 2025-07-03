@@ -61,21 +61,27 @@ function getPoster(path: string) {
 
           <p class="price">{{ formatCurrency(getPrice(movie.id)) }}</p>
 
-          <AppTooltip :text="`Adicionar ${movie.title} ao carrinho`" position="left">
-            <button
-              :aria-label="`Adicionar ${movie.title} ao carrinho`"
-              class="cart-btn"
-              @click="addToCart(movie)"
-            >
-              <PhShoppingCart size="20" weight="fill" />
-            </button>
-          </AppTooltip>
+          <div class="actions">
+            <AppTooltip :text="`Adicionar ${movie.title} ao carrinho`" position="left">
+              <button
+                :aria-label="`Adicionar ${movie.title} ao carrinho`"
+                class="cart-btn"
+                @click="addToCart(movie)"
+              >
+                <PhShoppingCart size="20" weight="fill" />
+              </button>
+            </AppTooltip>
 
-          <AppTooltip text="Remover dos favoritos" position="left">
-            <button aria-label="Remover dos favoritos" class="remove-btn" @click="remove(movie.id)">
-              <PhHeartStraightBreak size="20" weight="fill" />
-            </button>
-          </AppTooltip>
+            <AppTooltip text="Remover dos favoritos" position="left">
+              <button
+                aria-label="Remover dos favoritos"
+                class="remove-btn"
+                @click="remove(movie.id)"
+              >
+                <PhHeartStraightBreak size="20" weight="fill" />
+              </button>
+            </AppTooltip>
+          </div>
         </li>
       </ul>
     </div>
@@ -96,6 +102,10 @@ function getPoster(path: string) {
   padding: 1rem;
   font-weight: bold;
   border-bottom: 1px solid var(--color-border);
+
+  h2 {
+    font-size: 1.125rem;
+  }
 }
 
 .sidebar-content {
@@ -123,6 +133,7 @@ function getPoster(path: string) {
 
   .title {
     flex: 1;
+
     font-weight: 600;
     display: -webkit-box;
     line-clamp: 2;
@@ -136,6 +147,12 @@ function getPoster(path: string) {
     flex: 0.5;
     font-weight: bold;
     color: var(--color-text);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
   }
 
   .cart-btn {
