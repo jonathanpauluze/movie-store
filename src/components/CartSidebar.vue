@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, defineProps, defineEmits } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { RouterLink } from 'vue-router'
 import AppTooltip from './AppTooltip.vue'
 import AppButton from './AppButton.vue'
 import { PhTrash } from '@phosphor-icons/vue'
+import { getPrice } from '@/utils/getPrice'
+import { formatCurrency } from '@/utils/formatCurrency'
 
 type PropsType = { open: boolean }
 const props = defineProps<PropsType>()
@@ -59,7 +61,9 @@ onUnmounted(() => {
   <aside class="sidebar" :class="{ open: props.open }" ref="sidebarRef">
     <div class="sidebar-header">
       <h2>Meu Carrinho</h2>
-      <AppButton v-if="cartCount > 0" variant="link" @click="clearCart">Esvaziar</AppButton>
+      <AppButton v-if="cartCount > 0" variant="link" @click="clearCart" class="clear-btn"
+        >Esvaziar</AppButton
+      >
     </div>
 
     <div class="sidebar-content">
@@ -73,7 +77,7 @@ onUnmounted(() => {
 
           <p>1</p>
 
-          <p class="price">R$ 9,99</p>
+          <p class="price">{{ formatCurrency(getPrice(item.id)) }}</p>
 
           <AppTooltip text="Remover do carrinho" position="left">
             <button aria-label="Remover do carrinho" class="remove-btn" @click="remove(item.id)">
@@ -86,7 +90,7 @@ onUnmounted(() => {
 
     <div class="sidebar-footer" v-if="items.length > 0">
       <div class="total">
-        Total: <strong>R$ {{ total.toFixed(2) }}</strong>
+        Total: <strong>{{ formatCurrency(total) }}</strong>
       </div>
 
       <RouterLink to="/checkout" class="checkout-link">
@@ -165,6 +169,7 @@ onUnmounted(() => {
 }
 
 .price {
+  flex: 0.5;
   color: var(--color-text);
   font-weight: bold;
 }

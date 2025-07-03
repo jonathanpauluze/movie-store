@@ -1,3 +1,4 @@
+import { getPrice } from '@/utils/getPrice'
 import type { Movie } from '@/types/movie'
 
 export interface CartState {
@@ -25,7 +26,9 @@ export default {
     },
   },
   getters: {
-    cartTotal: (state: CartState) => state.items.length * 9.99, // Valor mockado para teste
+    cartTotal: (state: CartState) => {
+      return state.items.reduce((acc, item) => acc + getPrice(item.id), 0)
+    },
     cartCount: (state: CartState) => state.items.length,
   },
 }
