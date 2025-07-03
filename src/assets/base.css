@@ -26,7 +26,10 @@
   /* Definição de tema (global - light e dark) */
   --color-primary: #6b46c1;
   --color-primary-hover: #7e5ec9;
+  --color-info: #2196f3;
+  --color-success: #4caf50;
   --color-danger: #e53e3e;
+  --color-warning: #ff9800;
 
   /* Definição de tema (light) */
   --color-background: var(--white);

@@ -100,7 +100,7 @@ onUnmounted(() => {
   </aside>
 </template>
 
-<style scoped>
+<style scoped scss>
 .sidebar {
   position: fixed;
   top: 0;
@@ -113,31 +113,31 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   z-index: 1000;
-}
 
-.sidebar.open {
-  right: 0;
-}
+  &.open {
+    right: 0;
+  }
 
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  font-weight: bold;
-  border-bottom: 1px solid var(--color-border);
-}
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--color-border);
+  }
 
-.sidebar-content {
-  flex: 1;
-  padding: 1rem;
-}
+  .sidebar-content {
+    flex: 1;
+    padding: 1rem;
+  }
 
-.cart-item-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  .cart-item-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
 
 .cart-item {
@@ -146,12 +146,12 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-}
 
-.cart-item img {
-  width: 40px;
-  height: 40px;
-  background-color: #ccc;
+  img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
 }
 
 .title {
