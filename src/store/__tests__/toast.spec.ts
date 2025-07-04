@@ -29,12 +29,12 @@ describe('toast Vuex module', () => {
     })
   })
 
-  it('remove o toast após 3 segundos', () => {
+  it('remove o toast após 5 segundos', () => {
     store.dispatch('toast/showToast', { message: 'Item adicionado' })
 
     expect(store.state.toast.toasts).toHaveLength(1)
 
-    vi.advanceTimersByTime(3000)
+    vi.advanceTimersByTime(5000)
 
     expect(store.state.toast.toasts).toHaveLength(0)
   })
