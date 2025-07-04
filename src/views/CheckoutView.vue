@@ -7,11 +7,14 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, email, numeric, minLength, helpers } from '@vuelidate/validators'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { getPrice } from '@/utils/getPrice'
+import { maskCPF, maskPhone } from '@/utils/masks'
 import type { Movie } from '@/types/movie'
 
 const store = useStore()
 const cartItems = computed<Movie[]>(() => store.state.cart.items)
 const total = computed(() => cartItems.value.reduce((acc, m) => acc + getPrice(m.id), 0))
+
+const { withMessage } = helpers
 
 const form = reactive({
   name: '',
@@ -23,17 +26,18 @@ const form = reactive({
   city: '',
   state: '',
 })
-const { withMessage } = helpers
+const cpfClean = computed(() => form.cpf.replace(/\D/g, '').substring(0, 14))
+const phoneClean = computed(() => form.phone.replace(/\D/g, '').substring(0, 15))
 const rules = {
   name: { required: withMessage('Nome é obrigatório', required) },
   cpf: {
-    required: withMessage('CPF é obrigatório', required),
-    numeric: withMessage('Apenas números', numeric),
-    minLength: withMessage('CPF deve ter no mínimo 11 dígitos', minLength(11)),
+    required: withMessage('CPF é obrigatório', () => !!cpfClean.value),
+    numeric: withMessage('Apenas números', () => /^\d+$/.test(cpfClean.value)),
+    minLength: withMessage('CPF deve ter no mínimo 11 dígitos', () => cpfClean.value.length >= 11),
   },
   phone: {
-    required: withMessage('Telefone é obrigatório', required),
-    numeric: withMessage('Apenas números', numeric),
+    required: withMessage('Telefone é obrigatório', () => !!phoneClean.value),
+    numeric: withMessage('Apenas números', () => /^\d+$/.test(phoneClean.value)),
   },
   email: {
     required: withMessage('E-mail é obrigatório', required),
@@ -73,8 +77,22 @@ function removeFromCart(id: number) {
         <InputField v-model="form.name" label="Nome Completo" name="name" :validation="v$.name" />
 
         <div class="row">
-          <InputField v-model="form.cpf" label="CPF" name="cpf" :validation="v$.cpf" />
-          <InputField v-model="form.phone" label="Celular" name="phone" :validation="v$.phone" />
+          <InputField
+            v-model="form.cpf"
+            label="CPF"
+            name="cpf"
+            :validation="v$.cpf"
+            @update:modelValue="(val) => (form.cpf = maskCPF(val))"
+            maxlength="14"
+          />
+          <InputField
+            v-model="form.phone"
+            label="Celular"
+            name="phone"
+            :validation="v$.phone"
+            @update:modelValue="(val) => (form.phone = maskPhone(val))"
+            maxlength="15"
+          />
         </div>
 
         <InputField
