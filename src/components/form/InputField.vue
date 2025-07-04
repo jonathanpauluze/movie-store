@@ -74,11 +74,11 @@ const inputId = computed(() => `input-${props.name}`)
 }
 
 .input-field[aria-invalid='true'] {
-  border-color: red;
+  border-color: var(--color-danger);
 }
 
 .input-error {
-  color: red;
+  color: var(--color-danger);
   font-size: 0.875rem;
 }
 </style>
