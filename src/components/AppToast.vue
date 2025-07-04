@@ -28,7 +28,7 @@ const toasts = computed(() => store.state.toast.toasts)
 .toast {
   padding: 0.75rem 1rem;
   border-radius: 6px;
-  color: vara(--color-white);
+  color: var(--white);
   font-weight: 500;
   box-shadow: 0 2px 6px var(--color-shadow);
   animation: fade-in-out 5s ease forwards;
