@@ -124,7 +124,10 @@ onMounted(loadPopular)
         />
       </div>
 
-      <LoadingSpinner v-if="isLoading && hasMore" text="Carregando mais..." />
+      <LoadingSpinner
+        v-if="isLoading && movies.length !== 0 && hasMore"
+        text="Carregando mais..."
+      />
 
       <p class="end-message" v-if="!hasMore">Você chegou ao fim da lista.</p>
 
