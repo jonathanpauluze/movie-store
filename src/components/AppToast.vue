@@ -28,10 +28,10 @@ const toasts = computed(() => store.state.toast.toasts)
 .toast {
   padding: 0.75rem 1rem;
   border-radius: 6px;
-  color: white;
+  color: vara(--color-white);
   font-weight: 500;
-  box-shadow: 0 2px 6px var;
-  animation: fade-in-out 3s ease forwards;
+  box-shadow: 0 2px 6px var(--color-shadow);
+  animation: fade-in-out 5s ease forwards;
 
   &.success {
     background-color: var(--color-success);
