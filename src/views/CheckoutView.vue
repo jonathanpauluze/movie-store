@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { reactive, computed, watch } from 'vue'
+import { reactive, computed, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import InputField from '@/components/form/InputField.vue'
 import AppButton from '@/components/AppButton.vue'
+import AppTooltip from '@/components/AppTooltip.vue'
+import CheckoutSuccessModal from '@/components/CheckoutSuccessModal.vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, numeric, minLength, helpers } from '@vuelidate/validators'
 import { formatCurrency } from '@/utils/formatCurrency'
@@ -10,11 +12,15 @@ import { getPrice } from '@/utils/getPrice'
 import { maskCPF, maskPhone } from '@/utils/masks'
 import { isValidCPF, isValidPhone } from '@/utils/validators'
 import { fetchAddressByCep } from '@/services/cep'
+import router from '../router'
 import type { Movie } from '@/types/movie'
 
 const store = useStore()
+
 const cartItems = computed<Movie[]>(() => store.state.cart.items)
 const total = computed(() => cartItems.value.reduce((acc, m) => acc + getPrice(m.id), 0))
+
+const showSuccessModal = ref(false)
 
 const { withMessage } = helpers
 
@@ -87,12 +93,19 @@ function submit() {
   v$.value.$touch()
 
   if (!v$.value.$invalid) {
-    console.log('Compra finalizada:', form)
+    showSuccessModal.value = true
   }
 }
 
 function removeFromCart(id: number) {
   store.commit('cart/removeFromCart', id)
+}
+
+function handleSuccessClose() {
+  showSuccessModal.value = false
+
+  store.commit('cart/clearCart')
+  router.push({ name: 'home' })
 }
 </script>
 
@@ -199,6 +212,8 @@ function removeFromCart(id: number) {
       </div>
     </div>
   </div>
+
+  <CheckoutSuccessModal :visible="showSuccessModal" :name="form.name" @close="handleSuccessClose" />
 </template>
 
 <style scoped scss>
