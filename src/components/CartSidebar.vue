@@ -26,7 +26,7 @@ function close() {
   emit('close')
 }
 
-function remove(id: number) {
+function removeFromCart(id: number) {
   store.commit('cart/removeFromCart', id)
 }
 
@@ -62,7 +62,11 @@ function getPoster(path: string) {
           <p class="price">{{ formatCurrency(getPrice(item.id)) }}</p>
 
           <AppTooltip text="Remover do carrinho" position="left">
-            <button aria-label="Remover do carrinho" class="remove-btn" @click="remove(item.id)">
+            <button
+              aria-label="Remover do carrinho"
+              class="remove-btn"
+              @click="removeFromCart(item.id)"
+            >
               <PhTrash size="20" weight="fill" title="Remover do carrinho" />
             </button>
           </AppTooltip>

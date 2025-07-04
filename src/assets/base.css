@@ -14,7 +14,9 @@
   --divider-dark-2: rgba(84, 84, 84, 0.48);
 
   --shadow-light-1: rgba(0, 0, 0, 0.4);
+  --shadow-light-2: rgba(0, 0, 0, 0.2);
   --shadow-dark-1: rgba(18, 18, 18, 0.4);
+  --shadow-dark-2: rgba(18, 18, 18, 0.2);
 
   --heading-light: #293844;
 
@@ -45,6 +47,7 @@
   --color-border-hover: var(--divider-light-1);
 
   --color-shadow: var(--shadow-light-1);
+  --color-shadow-soft: var(--shadow-light-2);
 
   --color-heading: var(--heading-light);
   --color-text: var(--text-light-1);
@@ -66,6 +69,7 @@
     --color-border-hover: var(--divider-dark-1);
 
     --color-shadow: var(--shadow-dark-1);
+    --color-shadow-soft: var(--shadow-light-2);
 
     --color-heading: var(--text-dark-1);
     --color-text: var(--text-dark-1);

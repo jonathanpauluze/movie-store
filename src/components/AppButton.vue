@@ -60,7 +60,7 @@ const props = withDefaults(defineProps<PropsType>(), {
     color: white;
     border: none;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-primary-hover);
     }
   }
@@ -85,6 +85,13 @@ const props = withDefaults(defineProps<PropsType>(), {
     &:hover {
       color: var(--color-primary-hover);
     }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: var(--color-background-mute);
+    color: var(--color-text-light);
   }
 }
 </style>
