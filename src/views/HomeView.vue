@@ -1,29 +1,109 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { fetchPopularMovies } from '@/services/tmdb'
+import { fetchPopularMovies, searchMovies } from '@/services/tmdb'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import type { Movie } from '@/types/movie'
+import { debounce } from '@/utils/debounce'
+import { useInfiniteScroll } from '@/composables/useInfiniteScroll'
+
+type PropsType = { search?: string }
+const props = defineProps<PropsType>()
 
 const movies = ref<Movie[]>([])
 const isLoading = ref(true)
 const error = ref('')
+const currentPage = ref(1)
+const hasMore = ref(true)
+const totalPages = ref<number | null>(null)
 
 const store = useStore()
+
+const debouncedSearch = debounce(async (term) => {
+  const searchTerm = (term as string)?.trim()
+
+  if (!searchTerm || searchTerm.trim().length < 2) {
+    await loadPopular()
+    return
+  }
+
+  try {
+    isLoading.value = true
+    currentPage.value = 1
+
+    const res = await searchMovies(searchTerm)
+    movies.value = res.results
+    totalPages.value = res.total_pages
+  } catch (err: unknown) {
+    error.value = (err as Error).message || 'Erro na busca'
+  } finally {
+    isLoading.value = false
+  }
+}, 1000)
+
+watch(
+  () => props.search,
+  (term) => {
+    const trimmed = term?.trim()
+    if (!trimmed || trimmed.length < 2) return
+
+    movies.value = []
+    currentPage.value = 1
+    hasMore.value = true
+    debouncedSearch(trimmed)
+  },
+)
 
 function addToCart(movie: Movie) {
   store.dispatch('cart/tryAddToCart', movie)
 }
 
-onMounted(async () => {
+async function loadPopular() {
   try {
-    movies.value = await fetchPopularMovies()
+    const res = await fetchPopularMovies()
+    movies.value = res.results
+    totalPages.value = res.total_pages
+    hasMore.value = currentPage.value < res.total_pages
   } catch (err: unknown) {
     error.value = (err as Error).message || 'Erro ao carregar filmes'
   } finally {
     isLoading.value = false
   }
-})
+}
+
+async function loadMore() {
+  if (isLoading.value || !hasMore.value) return
+
+  isLoading.value = true
+  currentPage.value++
+
+  try {
+    let newMovies
+
+    if (props.search && props.search.trim().length >= 2) {
+      const res = await searchMovies(props.search, currentPage.value)
+      newMovies = res.results
+    } else {
+      const res = await fetchPopularMovies(currentPage.value)
+      newMovies = res.results
+    }
+
+    if (newMovies.length === 0) {
+      hasMore.value = false
+    } else {
+      movies.value.push(...newMovies)
+    }
+  } catch (err: unknown) {
+    error.value = (err as Error).message || 'Erro ao carregar mais filmes'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+useInfiniteScroll(loadMore)
+
+onMounted(loadPopular)
 </script>
 
 <template>
@@ -31,7 +111,8 @@ onMounted(async () => {
     <section>
       <h1>Filmes Populares</h1>
 
-      <p v-if="isLoading">Carregando...</p>
+      <LoadingSpinner v-if="isLoading && movies.length === 0" />
+
       <p v-if="error">{{ error }}</p>
 
       <div v-else class="movie-grid">
@@ -42,6 +123,17 @@ onMounted(async () => {
           @add-to-cart="addToCart"
         />
       </div>
+
+      <LoadingSpinner v-if="isLoading && hasMore" text="Carregando mais..." />
+
+      <p class="end-message" v-if="!hasMore">Você chegou ao fim da lista.</p>
+
+      <p
+        class="no-results"
+        v-if="!isLoading && (props?.search ?? '').length >= 2 && movies.length === 0"
+      >
+        Nenhum resultado encontrado para "{{ props.search }}"
+      </p>
     </section>
   </div>
 </template>
@@ -54,6 +146,12 @@ h1 {
   @media (min-width: 768px) {
     font-size: 2.5rem;
   }
+}
+
+.loader {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--color-text-light);
 }
 
 .movie-grid {

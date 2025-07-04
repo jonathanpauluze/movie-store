@@ -11,7 +11,10 @@ export async function fetchPopularMovies(page = 1) {
   }
 
   const data = await res.json()
-  return data.results
+  return {
+    results: data.results,
+    total_pages: data.total_pages,
+  }
 }
 
 export async function fetchGenres() {
@@ -23,4 +26,21 @@ export async function fetchGenres() {
 
   const data = await res.json()
   return data.genres as MovieGenre[]
+}
+
+export async function searchMovies(query: string, page = 1) {
+  const queryStr = encodeURIComponent(query)
+  const res = await fetch(
+    `${API_URL}/search/movie?api_key=${API_KEY}&language=pt-BR&query=${queryStr}&page=${page}`,
+  )
+
+  if (!res.ok) {
+    throw new Error('Erro ao buscar filmes')
+  }
+
+  const data = await res.json()
+  return {
+    results: data.results,
+    total_pages: data.total_pages,
+  }
 }

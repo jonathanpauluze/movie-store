@@ -1,12 +1,20 @@
-<template>
-  <input type="text" placeholder="Pesquisa" class="search-input" />
-</template>
+<script setup lang="ts">
+import InputField from './form/InputField.vue'
 
-<style scoped>
-.search-input {
-  padding: 0.5rem;
-  width: 300px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
+type PropTypes = {
+  modelValue: string
 }
-</style>
+defineProps<PropTypes>()
+
+type EmitType = (e: 'update:modelValue', value: string) => void
+const emit = defineEmits<EmitType>()
+</script>
+
+<template>
+  <InputField
+    name="search"
+    placeholder="Busque um filme..."
+    :model-value="modelValue"
+    @update:modelValue="emit('update:modelValue', $event)"
+  />
+</template>

@@ -4,7 +4,7 @@ import { useVuelidate } from '@vuelidate/core'
 
 type PropTypes = {
   modelValue: string
-  label: string
+  label?: string
   name: string
   type?: string
   placeholder?: string
@@ -35,7 +35,7 @@ const inputId = computed(() => `input-${props.name}`)
 
 <template>
   <div class="input-group">
-    <label :for="inputId" class="input-label">{{ label }}</label>
+    <label v-if="!!label" :for="inputId" class="input-label">{{ label }}</label>
 
     <input
       :id="inputId"

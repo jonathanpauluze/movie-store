@@ -6,17 +6,28 @@ import { ref } from 'vue'
 
 const isCartOpen = ref(false)
 const isFavoritesOpen = ref(false)
+const searchQuery = ref('')
+
+function handleSearch(value: string) {
+  searchQuery.value = value
+}
 </script>
 
 <template>
   <div>
-    <AppHeader @toggle-cart="isCartOpen = true" @toggle-favorites="isFavoritesOpen = true" />
+    <AppHeader
+      @toggle-cart="isCartOpen = true"
+      @toggle-favorites="isFavoritesOpen = true"
+      @search="handleSearch"
+    />
 
     <CartSidebar :open="isCartOpen" @close="isCartOpen = false" />
     <FavoritesSidebar :open="isFavoritesOpen" @close="isFavoritesOpen = false" />
 
     <main class="container">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <component :is="Component" :search="searchQuery" />
+      </router-view>
     </main>
   </div>
 </template>

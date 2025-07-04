@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import SearchBar from './SearchBar.vue'
 import { PhHeart, PhShoppingCart } from '@phosphor-icons/vue'
 
-const emit = defineEmits(['toggle-cart', 'toggle-favorites'])
+const emit = defineEmits(['toggle-cart', 'toggle-favorites', 'search'])
+
+const searchQuery = ref('')
+
+watch(searchQuery, (value) => {
+  emit('search', value)
+})
 
 const toggleCart = () => {
   emit('toggle-cart')
@@ -18,7 +25,7 @@ const toggleFavorites = () => {
     <div class="logo">LOGO</div>
 
     <div class="search">
-      <SearchBar />
+      <SearchBar v-model="searchQuery" />
     </div>
 
     <div class="actions">
