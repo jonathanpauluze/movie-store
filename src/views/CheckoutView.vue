@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
+import { reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import InputField from '@/components/form/InputField.vue'
 import AppButton from '@/components/AppButton.vue'
@@ -8,6 +8,8 @@ import { required, email, numeric, minLength, helpers } from '@vuelidate/validat
 import { formatCurrency } from '@/utils/formatCurrency'
 import { getPrice } from '@/utils/getPrice'
 import { maskCPF, maskPhone } from '@/utils/masks'
+import { isValidCPF, isValidPhone } from '@/utils/validators'
+import { fetchAddressByCep } from '@/services/cep'
 import type { Movie } from '@/types/movie'
 
 const store = useStore()
@@ -34,10 +36,12 @@ const rules = {
     required: withMessage('CPF é obrigatório', () => !!cpfClean.value),
     numeric: withMessage('Apenas números', () => /^\d+$/.test(cpfClean.value)),
     minLength: withMessage('CPF deve ter no mínimo 11 dígitos', () => cpfClean.value.length >= 11),
+    isValid: withMessage('CPF inválido', () => isValidCPF(cpfClean.value)),
   },
   phone: {
     required: withMessage('Telefone é obrigatório', () => !!phoneClean.value),
     numeric: withMessage('Apenas números', () => /^\d+$/.test(phoneClean.value)),
+    isValid: withMessage('Telefone inválido', () => isValidPhone(phoneClean.value)),
   },
   email: {
     required: withMessage('E-mail é obrigatório', required),
@@ -54,6 +58,26 @@ const rules = {
 }
 
 const v$ = useVuelidate(rules, form)
+
+watch(
+  () => form.cep,
+  async (newCep) => {
+    const cleanCep = newCep.replace(/\D/g, '')
+
+    if (cleanCep.length === 8) {
+      try {
+        const data = await fetchAddressByCep(cleanCep)
+        form.address = data.address
+        form.city = data.city
+        form.state = data.state
+      } catch (err) {
+        console.error(err)
+        v$.value.cep.$reset()
+        v$.value.cep.$setDirty()
+      }
+    }
+  },
+)
 
 function submit() {
   v$.value.$touch()
