@@ -4,6 +4,7 @@ type Toast = {
   id: number
   message: string
   type?: 'success' | 'error' | 'info' | 'warning'
+  duration?: number
 }
 
 export interface ToastState {
@@ -27,7 +28,7 @@ const toastModule: Module<ToastState, unknown> = {
       setTimeout(() => {
         const index = state.toasts.findIndex((t) => t.id === id)
         if (index !== -1) state.toasts.splice(index, 1)
-      }, 3000)
+      }, 5000)
     },
   },
 

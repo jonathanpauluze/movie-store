@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, computed, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import InputField from '@/components/form/InputField.vue'
 import AppButton from '@/components/AppButton.vue'
 import { useVuelidate } from '@vuelidate/core'
@@ -72,6 +72,10 @@ watch(
         form.state = data.state
       } catch (err) {
         console.error(err)
+        store.dispatch('toast/showToast', {
+          type: 'error',
+          message: 'Erro ao buscar endereço pelo CEP',
+        })
         v$.value.cep.$reset()
         v$.value.cep.$setDirty()
       }
