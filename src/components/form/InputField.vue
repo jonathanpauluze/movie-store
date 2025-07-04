@@ -38,6 +38,7 @@ const inputId = computed(() => `input-${props.name}`)
     <label v-if="!!label" :for="inputId" class="input-label">{{ label }}</label>
 
     <input
+      v-bind="$attrs"
       :id="inputId"
       :name="name"
       :type="type || 'text'"
