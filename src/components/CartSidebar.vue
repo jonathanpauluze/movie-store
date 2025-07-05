@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import AppSidebar from './AppSidebar.vue'
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { RouterLink } from 'vue-router'
 import AppTooltip from './AppTooltip.vue'
 import AppButton from './AppButton.vue'
 import { PhTrash } from '@phosphor-icons/vue'
+import { useStore } from '@/store'
 import { getPrice } from '@/utils/getPrice'
 import { formatCurrency } from '@/utils/formatCurrency'
+import type { Movie } from '@/types/movie'
 
 type PropsType = { open: boolean }
 
@@ -34,8 +35,10 @@ function clearCart() {
   store.commit('cart/clearCart')
 }
 
-function getPoster(path: string) {
-  return `https://image.tmdb.org/t/p/w200${path}`
+function getPoster(movie: Movie) {
+  if (movie.poster_path) return `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+
+  return new URL('@/assets/images/no-poster.png', import.meta.url).href
 }
 </script>
 
@@ -53,7 +56,7 @@ function getPoster(path: string) {
 
       <ul class="cart-item-list" v-else>
         <li v-for="item in items" :key="item.id" class="cart-item">
-          <img :src="getPoster(item.poster_path)" alt="" />
+          <img :src="getPoster(item)" alt="" />
 
           <p class="title" :title="item.title">{{ item.title }}</p>
 
