@@ -24,7 +24,7 @@ const toggleFavorites = () => {
 <template>
   <header class="header">
     <div class="logo">
-      <RouterLink to="/">LOGO</RouterLink>
+      <RouterLink to="/">MovieStore</RouterLink>
     </div>
 
     <div class="search">

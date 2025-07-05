@@ -16,7 +16,7 @@ describe('Header.vue', () => {
   })
 
   it('renderiza o logo', () => {
-    expect(wrapper.find('.logo').text()).toBe('LOGO')
+    expect(wrapper.find('.logo').text()).toBe('MovieStore')
   })
 
   it('renderiza os botões de favoritos e carrinho', () => {
