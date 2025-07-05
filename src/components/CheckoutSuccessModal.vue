@@ -21,18 +21,19 @@ defineEmits(['close'])
   </AppModal>
 </template>
 
-<style scoped>
+<style scoped scss>
 .success-box {
+  padding: 2rem;
   text-align: center;
-}
 
-.success-box h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
 
-.success-box p {
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+  p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
 }
 </style>

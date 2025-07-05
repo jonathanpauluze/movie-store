@@ -31,11 +31,11 @@ defineEmits(['close'])
 .modal-content {
   background-color: var(--color-background-soft);
   border-radius: 8px;
-  padding: 2rem;
   margin: 1rem;
   width: 100%;
   max-width: 400px;
   transform: translateY(100px);
+  overflow: hidden;
   animation: slide-up 0.4s ease-out forwards;
 }
 
