@@ -107,6 +107,12 @@ function handleSuccessClose() {
   store.commit('cart/clearCart')
   router.push({ name: 'home' })
 }
+
+function getPoster(movie: Movie) {
+  if (movie.poster_path) return `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+
+  return new URL('@/assets/images/no-poster.png', import.meta.url).href
+}
 </script>
 
 <template>
@@ -175,11 +181,7 @@ function handleSuccessClose() {
             <tbody>
               <tr v-for="movie in cartItems" :key="movie.id">
                 <td>
-                  <img
-                    class="movie-img"
-                    :src="`https://image.tmdb.org/t/p/w92${movie.poster_path}`"
-                    alt=""
-                  />
+                  <img class="movie-img" :src="getPoster(movie)" alt="" />
                 </td>
                 <td class="movie-name">{{ movie.title }}</td>
                 <td>1</td>
