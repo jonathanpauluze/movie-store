@@ -1,4 +1,4 @@
-:root {
+@mixin default-theme {
   /* Definição de cores */
   --white: #ffffff;
   --white-soft: #f8f8f8;
@@ -36,8 +36,31 @@
 
   --scrollbar-thumb-color: var(--color-primary);
   --scrollbar-size: 12px;
+}
 
-  /* Definição de tema (light) */
+@mixin dark-theme {
+  --color-background: var(--black);
+  --color-background-soft: var(--black-soft);
+  --color-background-mute: var(--black-mute);
+
+  --color-reverse-background: var(--white);
+  --color-reverse-background-soft: var(--white-soft);
+  --color-reverse-background-mute: var(--white-mute);
+
+  --color-border: var(--divider-dark-2);
+  --color-border-hover: var(--divider-dark-1);
+
+  --color-shadow: var(--shadow-dark-1);
+  --color-shadow-soft: var(--shadow-light-2);
+
+  --color-heading: var(--text-dark-1);
+  --color-text: var(--text-dark-1);
+  --color-text-light: var(--text-dark-2);
+
+  --scrollbar-track-color: var(--black-mute);
+}
+
+@mixin light-theme {
   --color-background: var(--white);
   --color-background-soft: var(--white-soft);
   --color-background-mute: var(--white-mute);
@@ -59,28 +82,24 @@
   --scrollbar-track-color: var(--white-mute);
 }
 
+:root {
+  @include default-theme;
+
+  /* Definição de tema (light) */
+  @include light-theme;
+}
+
+.dark {
+  @include dark-theme;
+}
+
+.light {
+  @include light-theme;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    /* Definição de tema (dark) */
-    --color-background: var(--black);
-    --color-background-soft: var(--black-soft);
-    --color-background-mute: var(--black-mute);
-
-    --color-reverse-background: var(--white);
-    --color-reverse-background-soft: var(--white-soft);
-    --color-reverse-background-mute: var(--white-mute);
-
-    --color-border: var(--divider-dark-2);
-    --color-border-hover: var(--divider-dark-1);
-
-    --color-shadow: var(--shadow-dark-1);
-    --color-shadow-soft: var(--shadow-light-2);
-
-    --color-heading: var(--text-dark-1);
-    --color-text: var(--text-dark-1);
-    --color-text-light: var(--text-dark-2);
-
-    --scrollbar-track-color: var(--black-mute);
+  :root:not(.light):not(.dark) {
+    @include dark-theme;
   }
 }
 

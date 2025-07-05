@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { PhHeart, PhShoppingCart } from '@phosphor-icons/vue'
 import { useStore } from '@/store'
 import SearchBar from './SearchBar.vue'
+import DarkModeToggle from './DarkModeToggle.vue'
 
 const emit = defineEmits(['toggle-cart', 'toggle-favorites', 'search'])
 
@@ -38,6 +39,8 @@ const toggleFavorites = () => {
     </div>
 
     <div class="actions">
+      <DarkModeToggle />
+
       <button class="favorites-btn" aria-label="Favoritos" @click="toggleFavorites">
         <PhHeart weight="fill" size="24" />
         <span class="count-badge" v-if="favoritesCount > 0">{{ favoritesCountText }}</span>
@@ -77,6 +80,7 @@ const toggleFavorites = () => {
 
 .actions {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   order: 2;
   flex-shrink: 0;
