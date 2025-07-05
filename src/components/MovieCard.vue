@@ -12,7 +12,7 @@ import { type Movie } from '@/types/movie'
 type PropsType = { movie: Movie }
 const props = defineProps<PropsType>()
 
-type EmitType = (event: 'add-to-cart', movie: Movie) => void
+type EmitType = (event: 'add-to-cart' | 'select-movie', movie: Movie) => void
 const emit = defineEmits<EmitType>()
 
 const store = useStore()
@@ -52,6 +52,18 @@ function toggleFavorite() {
       </div>
 
       <AppButton
+        class="details-btn"
+        fullWidth
+        size="sm"
+        variant="outline"
+        aria-label="Ver detalhes de {{ movie.title }}"
+        @click="emit('select-movie', movie)"
+      >
+        Ver detalhes
+      </AppButton>
+
+      <AppButton
+        class="cart-btn"
         fullWidth
         size="sm"
         aria-label="Adicionar {{ movie.title }} ao carrinho"

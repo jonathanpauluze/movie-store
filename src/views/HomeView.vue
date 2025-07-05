@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 import { fetchPopularMovies, searchMovies } from '@/services/tmdb'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import MovieCard from '@/components/MovieCard.vue'
+import MovieDetailsModal from '@/components/MovieDetailsModal.vue'
 import type { Movie } from '@/types/movie'
 import { debounce } from '@/utils/debounce'
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll'
@@ -17,6 +18,8 @@ const error = ref('')
 const currentPage = ref(1)
 const hasMore = ref(true)
 const totalPages = ref<number | null>(null)
+const showSelectedMovieModal = ref(false)
+const selectedMovie = ref<Movie | null>(null)
 
 const store = useStore()
 
@@ -57,6 +60,11 @@ watch(
 
 function addToCart(movie: Movie) {
   store.dispatch('cart/tryAddToCart', movie)
+}
+
+function openMovieDetails(movie: Movie) {
+  showSelectedMovieModal.value = true
+  selectedMovie.value = movie
 }
 
 async function loadPopular() {
@@ -101,6 +109,10 @@ async function loadMore() {
   }
 }
 
+function handleDetailsClose() {
+  showSelectedMovieModal.value = false
+}
+
 useInfiniteScroll(loadMore)
 
 onMounted(loadPopular)
@@ -121,6 +133,7 @@ onMounted(loadPopular)
           :key="movie.id"
           :movie="movie"
           @add-to-cart="addToCart"
+          @select-movie="openMovieDetails"
         />
       </div>
 
@@ -139,6 +152,12 @@ onMounted(loadPopular)
       </p>
     </section>
   </div>
+
+  <MovieDetailsModal
+    :open="showSelectedMovieModal"
+    :movie="selectedMovie"
+    @close="handleDetailsClose"
+  />
 </template>
 
 <style scoped scss>

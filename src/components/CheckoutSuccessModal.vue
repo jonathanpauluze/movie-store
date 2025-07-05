@@ -3,7 +3,7 @@ import AppModal from './AppModal.vue'
 import AppButton from './AppButton.vue'
 
 type PropsType = {
-  visible: boolean
+  open: boolean
   name: string
 }
 defineProps<PropsType>()
@@ -12,7 +12,7 @@ defineEmits(['close'])
 </script>
 
 <template>
-  <AppModal :visible="visible" @close="$emit('close')">
+  <AppModal :open="open" @close="$emit('close')" :closable="false">
     <div class="success-box">
       <h3>Obrigado {{ name }}!</h3>
       <p>Sua compra foi finalizada com sucesso!</p>

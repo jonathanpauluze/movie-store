@@ -5,9 +5,9 @@ import AppModal from '@/components/AppModal.vue'
 
 let wrapper: ReturnType<typeof mount>
 
-function mountModal(visible = true) {
+function mountModal(open = true) {
   return mount(AppModal, {
-    props: { visible },
+    props: { open },
     slots: {
       default: '<p>Conteúdo do Modal</p>',
     },

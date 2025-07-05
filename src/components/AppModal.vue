@@ -1,15 +1,52 @@
 <script setup lang="ts">
-type PropsType = { visible: boolean }
-defineProps<PropsType>()
+import { onUnmounted, ref, nextTick } from 'vue'
+import { useTrapFocus } from '@/composables/useTrapFocus'
+import { useEscapeToClose } from '@/composables/useEscapeToClose'
 
-defineEmits(['close'])
+type PropsType = { open: boolean; closable?: boolean }
+const props = withDefaults(defineProps<PropsType>(), {
+  closable: true,
+})
+
+const emit = defineEmits(['close'])
+
+const modalRef = ref<HTMLElement | null>(null)
+
+function onAfterEnter() {
+  nextTick(() => {
+    const focusable = modalRef.value?.querySelector<HTMLElement>(
+      'a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])',
+    )
+    focusable?.focus()
+  })
+}
+
+function handleBackdropClick() {
+  if (props.closable) {
+    emit('close')
+  }
+}
+
+useTrapFocus(
+  () => modalRef.value,
+  () => props.open,
+)
+
+useEscapeToClose(
+  () => emit('close'),
+  () => props.open && props.closable,
+)
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
 </script>
 
 <template>
   <Teleport to="body">
-    <transition name="modal-fade-slide">
-      <div v-if="visible" class="modal-backdrop" @click.self="$emit('close')">
-        <div class="modal-content">
+    <transition name="modal-fade-slide" @after-enter="onAfterEnter">
+      <div v-if="open" class="modal-backdrop" @click.self="handleBackdropClick">
+        <div class="modal-content" ref="modalRef" role="dialog" aria-modal="true">
           <slot />
         </div>
       </div>

@@ -213,7 +213,7 @@ function handleSuccessClose() {
     </div>
   </div>
 
-  <CheckoutSuccessModal :visible="showSuccessModal" :name="form.name" @close="handleSuccessClose" />
+  <CheckoutSuccessModal :open="showSuccessModal" :name="form.name" @close="handleSuccessClose" />
 </template>
 
 <style scoped scss>

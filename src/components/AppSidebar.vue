@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { useTrapFocus } from '@/composables/useTrapFocus'
+import { useEscapeToClose } from '@/composables/useEscapeToClose'
 
 type PropsType = {
   open: boolean
@@ -13,7 +15,7 @@ const props = withDefaults(defineProps<PropsType>(), {
 type EmitType = (event: 'close') => void
 const emit = defineEmits<EmitType>()
 
-const sidebarRef = ref<HTMLElement>()
+const sidebarRef = ref<HTMLElement | null>(null)
 
 function handleClickOutside(event: MouseEvent) {
   if (props.open && sidebarRef.value && !sidebarRef.value.contains(event.target as Node)) {
@@ -21,34 +23,15 @@ function handleClickOutside(event: MouseEvent) {
   }
 }
 
-function handleEsc(event: KeyboardEvent) {
-  if (event.key === 'Escape') emit('close')
-}
+useTrapFocus(
+  () => sidebarRef.value,
+  () => props.open,
+)
 
-function trapFocus(event: KeyboardEvent) {
-  if (event.key !== 'Tab' || !sidebarRef.value) return
-
-  const focusables = sidebarRef.value.querySelectorAll<HTMLElement>(
-    'a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])',
-  )
-
-  if (focusables.length === 0) return
-
-  const first = focusables[0]
-  const last = focusables[focusables.length - 1]
-
-  if (event.shiftKey && document.activeElement === first) {
-    event.preventDefault()
-    last.focus()
-
-    return
-  }
-
-  if (document.activeElement === last) {
-    event.preventDefault()
-    first.focus()
-  }
-}
+useEscapeToClose(
+  () => emit('close'),
+  () => props.open,
+)
 
 watch(
   () => props.open,
@@ -66,14 +49,10 @@ watch(
 
 onMounted(() => {
   window.addEventListener('mousedown', handleClickOutside)
-  window.addEventListener('keydown', handleEsc)
-  window.addEventListener('keydown', trapFocus)
 })
 
 onUnmounted(() => {
   window.removeEventListener('mousedown', handleClickOutside)
-  window.removeEventListener('keydown', handleEsc)
-  window.removeEventListener('keydown', trapFocus)
   document.body.style.overflow = ''
 })
 </script>
