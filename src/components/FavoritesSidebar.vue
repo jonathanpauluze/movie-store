@@ -102,6 +102,7 @@ function getPoster(path: string) {
 .sidebar-content {
   flex: 1;
   padding: 1rem;
+  overflow-y: auto;
 }
 
 .favorites-list {

@@ -106,6 +106,7 @@ function getPoster(movie: Movie) {
 .sidebar-content {
   flex: 1;
   padding: 1rem;
+  overflow-y: auto;
 }
 
 .cart-item-list {
