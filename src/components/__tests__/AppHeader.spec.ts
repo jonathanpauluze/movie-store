@@ -1,6 +1,12 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import AppHeader from '@/components/AppHeader.vue'
+
+vi.mock('vue-router', () => ({
+  RouterLink: {
+    template: '<a><slot /></a>',
+  },
+}))
 
 describe('Header.vue', () => {
   let wrapper: ReturnType<typeof mount>
