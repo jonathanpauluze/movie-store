@@ -26,7 +26,7 @@ const store = useStore()
 const debouncedSearch = debounce(async (term) => {
   const searchTerm = (term as string)?.trim()
 
-  if (!searchTerm || searchTerm.trim().length < 2) {
+  if (!searchTerm || searchTerm.length < 2) {
     await loadPopular()
     return
   }
@@ -49,11 +49,12 @@ watch(
   () => props.search,
   (term) => {
     const trimmed = term?.trim()
-    if (!trimmed || trimmed.length < 2) return
 
+    isLoading.value = true
     movies.value = []
     currentPage.value = 1
     hasMore.value = true
+
     debouncedSearch(trimmed)
   },
 )
@@ -69,6 +70,8 @@ function openMovieDetails(movie: Movie) {
 
 async function loadPopular() {
   try {
+    isLoading.value = true
+
     const res = await fetchPopularMovies()
     movies.value = res.results
     totalPages.value = res.total_pages
@@ -144,10 +147,7 @@ onMounted(loadPopular)
 
       <p class="end-message" v-if="!hasMore">Você chegou ao fim da lista.</p>
 
-      <p
-        class="no-results"
-        v-if="!isLoading && (props?.search ?? '').length >= 2 && movies.length === 0"
-      >
+      <p class="no-results" v-if="!isLoading && movies.length === 0">
         Nenhum resultado encontrado para "{{ props.search }}"
       </p>
     </section>
