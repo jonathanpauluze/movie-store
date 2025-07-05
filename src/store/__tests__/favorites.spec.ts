@@ -1,6 +1,6 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createStore } from 'vuex'
 import favoritesModule from '@/store/modules/favorites'
-import { describe, it, expect, beforeEach } from 'vitest'
 
 const mockMovie = {
   id: 101,
@@ -11,6 +11,11 @@ const mockMovie = {
   vote_count: 500,
   poster_path: '/poster.jpg',
 }
+
+vi.mock('@/utils/localStorage', () => ({
+  loadFromStorage: () => [],
+  saveToStorage: vi.fn(),
+}))
 
 describe('favorites Vuex module', () => {
   let store: ReturnType<typeof createStore>
@@ -43,6 +48,7 @@ describe('favorites Vuex module', () => {
 
   it('remove um filme dos favoritos', () => {
     store.commit('favorites/toggleFavorite', mockMovie)
+
     store.commit('favorites/removeFavorite', mockMovie.id)
 
     expect(store.state.favorites.items).toHaveLength(0)

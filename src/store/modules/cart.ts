@@ -1,4 +1,5 @@
 import { getPrice } from '@/utils/getPrice'
+import { loadFromStorage, saveToStorage } from '@/utils/localStorage'
 import type { Movie } from '@/types/movie'
 import type { ActionContext } from 'vuex/types/index.d.ts'
 import type { RootState } from '@/store'
@@ -6,10 +7,12 @@ export interface CartState {
   items: Movie[]
 }
 
+const CART_STORAGE_KEY = '@app/cart'
+
 export default {
   namespaced: true,
   state: (): CartState => ({
-    items: [],
+    items: loadFromStorage<Movie[]>(CART_STORAGE_KEY) || [],
   }),
   actions: {
     tryAddToCart({ state, commit, dispatch }: ActionContext<CartState, RootState>, movie: Movie) {
@@ -44,13 +47,16 @@ export default {
 
       if (!alreadyAdded) {
         state.items.push(movie)
+        saveToStorage(CART_STORAGE_KEY, state.items)
       }
     },
     removeFromCart(state: CartState, movieId: number) {
       state.items = state.items.filter((item) => item.id !== movieId)
+      saveToStorage(CART_STORAGE_KEY, state.items)
     },
     clearCart(state: CartState) {
       state.items = []
+      saveToStorage(CART_STORAGE_KEY, [])
     },
   },
   getters: {

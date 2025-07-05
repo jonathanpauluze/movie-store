@@ -13,6 +13,11 @@ const mockMovie = {
   poster_path: '/poster.jpg',
 }
 
+vi.mock('@/utils/localStorage', () => ({
+  loadFromStorage: () => [],
+  saveToStorage: vi.fn(),
+}))
+
 describe('cart Vuex module', () => {
   let store: ReturnType<typeof createStore>
 
