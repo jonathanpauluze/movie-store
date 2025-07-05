@@ -27,12 +27,12 @@ const store = createStore({
   },
 })
 
-// Mock do RouterLink e ícone
 vi.mock('vue-router', () => ({
   RouterLink: {
     template: '<a><slot /></a>',
   },
 }))
+
 vi.mock('@phosphor-icons/vue', () => ({
   PhTrash: {
     template: '<svg />',
