@@ -1,4 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { ref } from 'vue'
 import { mount } from '@vue/test-utils'
 import { createStore } from 'vuex'
 import cartModule from '@/store/modules/cart'
@@ -9,6 +10,12 @@ vi.mock('vue-router', () => ({
   RouterLink: {
     template: '<a><slot /></a>',
   },
+}))
+vi.mock('@/composables/useDarkMode', () => ({
+  useDarkMode: () => ({
+    isDark: ref(false),
+    toggleDark: vi.fn(),
+  }),
 }))
 
 describe('Header.vue', () => {
