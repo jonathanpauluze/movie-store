@@ -21,7 +21,11 @@ const { resolve } = useGenres()
 const genres = computed(() => resolve(props?.movie?.genre_ids ?? []))
 
 const backdropPath = computed(() => {
-  return `https://image.tmdb.org/t/p/w500${props.movie?.backdrop_path}`
+  if (props.movie?.backdrop_path) {
+    return `https://image.tmdb.org/t/p/w500${props.movie?.backdrop_path}`
+  }
+
+  return new URL('@/assets/images/no-poster.png', import.meta.url).href
 })
 
 const isInCart = computed(() => store.getters['cart/isInCart'](props.movie?.id))
@@ -81,12 +85,14 @@ function addToCart() {
   height: 200px;
   padding: 0 0.5rem 1rem;
   background-size: cover;
+  background-position: center;
 
   h3 {
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
     z-index: 1;
+    color: var(--white);
   }
 
   &::after {
