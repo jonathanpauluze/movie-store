@@ -22,6 +22,7 @@ withDefaults(defineProps<PropTypes>(), {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  padding: 2rem 0;
   color: var(--color-text-light);
 
   svg {
