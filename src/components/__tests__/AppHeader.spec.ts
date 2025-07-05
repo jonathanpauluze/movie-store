@@ -1,5 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { createStore } from 'vuex'
+import cartModule from '@/store/modules/cart'
+import favoritesModule from '@/store/modules/favorites'
 import AppHeader from '@/components/AppHeader.vue'
 
 vi.mock('vue-router', () => ({
@@ -9,10 +12,28 @@ vi.mock('vue-router', () => ({
 }))
 
 describe('Header.vue', () => {
+  let store: ReturnType<typeof createStore>
   let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
-    wrapper = mount(AppHeader)
+    store = createStore({
+      modules: {
+        cart: {
+          ...cartModule,
+          namespaced: true,
+        },
+        favorites: {
+          ...favoritesModule,
+          namespaced: true,
+        },
+      },
+    })
+
+    wrapper = mount(AppHeader, {
+      global: {
+        plugins: [store],
+      },
+    })
   })
 
   it('renderiza o logo', () => {

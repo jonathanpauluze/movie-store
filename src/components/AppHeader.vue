@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import SearchBar from './SearchBar.vue'
 import { PhHeart, PhShoppingCart } from '@phosphor-icons/vue'
+import { useStore } from '@/store'
+import SearchBar from './SearchBar.vue'
 
 const emit = defineEmits(['toggle-cart', 'toggle-favorites', 'search'])
 
+const store = useStore()
 const searchQuery = ref('')
+const cartCount = computed(() => store.getters['cart/cartCount'])
+const favoritesCount = computed(() => store.getters['favorites/favoritesCount'])
+const cartCountText = computed(() => (cartCount.value > 9 ? '9+' : cartCount.value))
+const favoritesCountText = computed(() => (favoritesCount.value > 9 ? '9+' : favoritesCount.value))
 
 watch(searchQuery, (value) => {
   emit('search', value)
@@ -32,12 +38,14 @@ const toggleFavorites = () => {
     </div>
 
     <div class="actions">
-      <button aria-label="Favoritos" @click="toggleFavorites">
+      <button class="favorites-btn" aria-label="Favoritos" @click="toggleFavorites">
         <PhHeart weight="fill" size="24" />
+        <span class="count-badge" v-if="favoritesCount > 0">{{ favoritesCountText }}</span>
       </button>
 
-      <button aria-label="Carrinho" @click="toggleCart">
+      <button class="cart-btn" aria-label="Carrinho" @click="toggleCart">
         <PhShoppingCart weight="fill" size="24" />
+        <span class="count-badge" v-if="cartCount > 0">{{ cartCountText }}</span>
       </button>
     </div>
   </header>
@@ -78,6 +86,26 @@ const toggleFavorites = () => {
     border: none;
     cursor: pointer;
     color: var(--color-text);
+  }
+}
+
+.cart-btn,
+.favorites-btn {
+  position: relative;
+
+  .count-badge {
+    position: absolute;
+    top: -8px;
+    right: -2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    color: var(--white);
+    border-radius: 50%;
+    background-color: var(--color-primary);
   }
 }
 
