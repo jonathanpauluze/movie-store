@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 import SearchBar from './SearchBar.vue'
 import { PhHeart, PhShoppingCart } from '@phosphor-icons/vue'
 
@@ -22,7 +23,9 @@ const toggleFavorites = () => {
 
 <template>
   <header class="header">
-    <div class="logo">LOGO</div>
+    <div class="logo">
+      <RouterLink to="/">LOGO</RouterLink>
+    </div>
 
     <div class="search">
       <SearchBar v-model="searchQuery" />
@@ -57,6 +60,11 @@ const toggleFavorites = () => {
   font-size: 1.2rem;
   order: 1;
   flex-shrink: 0;
+
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
 }
 
 .actions {
