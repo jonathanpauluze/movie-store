@@ -16,13 +16,19 @@ const toasts = computed(() => store.state.toast.toasts)
 
 <style scoped scss>
 .toast-container {
+  width: 90%;
   position: fixed;
   top: 1rem;
-  right: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   z-index: 9999;
+
+  @media (min-width: 768px) {
+    width: 350px;
+  }
 }
 
 .toast {
