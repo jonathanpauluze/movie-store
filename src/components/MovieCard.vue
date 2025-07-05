@@ -25,6 +25,7 @@ const imageUrl = computed(() => {
 
   return new URL('@/assets/images/no-poster.png', import.meta.url).href
 })
+const isInCart = computed(() => store.getters['cart/isInCart'](props.movie?.id))
 
 function toggleFavorite() {
   store.commit('favorites/toggleFavorite', props.movie)
@@ -64,12 +65,13 @@ function toggleFavorite() {
 
       <AppButton
         class="cart-btn"
+        :disabled="isInCart"
         fullWidth
         size="sm"
         aria-label="Adicionar {{ movie.title }} ao carrinho"
         @click="emit('add-to-cart', movie)"
       >
-        Adicionar
+        {{ isInCart ? 'Adicionado' : 'Adicionar' }}
       </AppButton>
     </div>
 
@@ -97,6 +99,13 @@ function toggleFavorite() {
 
   &:hover {
     transform: translateY(-2px);
+  }
+}
+
+.cart-btn {
+  &:disabled {
+    background-color: var(--color-background-soft);
+    opacity: 0.9;
   }
 }
 

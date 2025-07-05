@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { PhTag, PhGlobe, PhCalendarBlank, PhStar, PhX } from '@phosphor-icons/vue'
 import AppModal from './AppModal.vue'
 import AppButton from './AppButton.vue'
+import { useStore } from '@/store'
 import { useGenres } from '@/composables/useGenres'
 import { formatDate } from '@/utils/date'
 import type { Movie } from '@/types/movie'
@@ -13,14 +14,22 @@ type PropsType = {
 }
 const props = defineProps<PropsType>()
 
-defineEmits(['close'])
+const emit = defineEmits(['close'])
 
+const store = useStore()
 const { resolve } = useGenres()
 const genres = computed(() => resolve(props?.movie?.genre_ids ?? []))
 
 const backdropPath = computed(() => {
   return `https://image.tmdb.org/t/p/w500${props.movie?.backdrop_path}`
 })
+
+const isInCart = computed(() => store.getters['cart/isInCart'](props.movie?.id))
+
+function addToCart() {
+  store.dispatch('cart/tryAddToCart', props.movie)
+  emit('close')
+}
 </script>
 
 <template>
@@ -52,9 +61,11 @@ const backdropPath = computed(() => {
         </div>
       </div>
 
-      <AppButton fullWidth @click="$emit('close')">Adicionar ao carrinho</AppButton>
+      <AppButton fullWidth @click="addToCart" :disabled="isInCart" :aria-disabled="isInCart">
+        {{ isInCart ? 'Adicionado' : 'Adicionar' }} ao carrinho
+      </AppButton>
 
-      <button aria-label="Fechar" class="close-btn" fullWidth @click="$emit('close')">
+      <button aria-label="Fechar" class="close-btn" @click="$emit('close')">
         <PhX :size="18" />
       </button>
     </div>

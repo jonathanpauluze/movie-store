@@ -42,6 +42,12 @@ describe('MovieCard', () => {
             removeFavorite: vi.fn(),
           },
         },
+        cart: {
+          namespaced: true,
+          getters: {
+            isInCart: () => () => false,
+          },
+        },
       },
     })
 

@@ -64,5 +64,8 @@ export default {
       return state.items.reduce((acc, item) => acc + getPrice(item.id), 0)
     },
     cartCount: (state: CartState) => state.items.length,
+    isInCart: (state: CartState) => (movieId: number) => {
+      return state.items.some((item) => item.id === movieId)
+    },
   },
 }
