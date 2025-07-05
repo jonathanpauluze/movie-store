@@ -124,8 +124,8 @@ function getPoster(movie: Movie) {
 
   img {
     width: 40px;
-    height: 40px;
-    object-fit: contain;
+    height: 60px;
+    object-fit: cover;
   }
 }
 
