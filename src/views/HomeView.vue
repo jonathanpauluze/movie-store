@@ -3,6 +3,7 @@ import { ref, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { fetchPopularMovies, searchMovies } from '@/services/tmdb'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import BackToTop from '@/components/BackToTop.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import MovieDetailsModal from '@/components/MovieDetailsModal.vue'
 import type { Movie } from '@/types/movie'
@@ -158,6 +159,8 @@ onMounted(loadPopular)
     :movie="selectedMovie"
     @close="handleDetailsClose"
   />
+
+  <BackToTop />
 </template>
 
 <style scoped scss>
