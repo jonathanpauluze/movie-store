@@ -14,6 +14,9 @@ dependencies:
   '@vuelidate/validators':
     specifier: ^2.0.4
     version: 2.0.4(vue@3.5.17)
+  canvas-confetti:
+    specifier: ^1.9.3
+    version: 1.9.3
   vue:
     specifier: ^3.5.17
     version: 3.5.17(typescript@5.8.2)
@@ -28,6 +31,9 @@ devDependencies:
   '@tsconfig/node22':
     specifier: ^22.0.2
     version: 22.0.2
+  '@types/canvas-confetti':
+    specifier: ^1.9.0
+    version: 1.9.0
   '@types/jsdom':
     specifier: ^21.1.7
     version: 21.1.7
@@ -1071,6 +1077,10 @@ packages:
     resolution: {integrity: sha512-Kmwj4u8sDRDrMYRoN9FDEcXD8UpBSaPQQ24Gz+Gamqfm7xxn+GBR7ge/Z7pK8OXNGyUzbSwJj+TH6B+DS/epyA==}
     dev: true
 
+  /@types/canvas-confetti@1.9.0:
+    resolution: {integrity: sha512-aBGj/dULrimR1XDZLtG9JwxX1b4HPRF6CX9Yfwh3NvstZEm1ZL7RBnel4keCPSqs1ANRu1u2Aoz9R+VmtjYuTg==}
+    dev: true
+
   /@types/chai@5.2.2:
     resolution: {integrity: sha512-8kB30R7Hwqf40JPiKhVzodJs2Qc1ZJ5zuT3uzw5Hq/dhNCl3G3l83jfpdI1e20BP348+fV7VIL/+FxaXkqBmWg==}
     dependencies:
@@ -1781,6 +1791,10 @@ packages:
   /caniuse-lite@1.0.30001726:
     resolution: {integrity: sha512-VQAUIUzBiZ/UnlM28fSp2CRF3ivUn1BWEvxMcVTNwpw91Py1pGbPIyIKtd+tzct9C3ouceCVdGAXxZOpZAsgdw==}
     dev: true
+
+  /canvas-confetti@1.9.3:
+    resolution: {integrity: sha512-rFfTURMvmVEX1gyXFgn5QMn81bYk70qa0HLzcIOSVEyl57n6o9ItHeBtUSWdvKAPY0xlvBHno4/v3QPrT83q9g==}
+    dev: false
 
   /chai@5.2.0:
     resolution: {integrity: sha512-mCuXncKXk5iCLhfhwTc0izo0gtEmpz5CtG2y8GiOINBlMVS6v8TMRc5TaLWKS6692m9+dVVfzgeVxR5UxWHTYw==}

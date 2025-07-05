@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import AppButton from './AppButton.vue'
 import { PhStar, PhHeart } from '@phosphor-icons/vue'
+import confetti from 'canvas-confetti'
 import { useGenres } from '@/composables/useGenres'
 import { getPrice } from '@/utils/getPrice'
 
@@ -27,8 +28,32 @@ const imageUrl = computed(() => {
 })
 const isInCart = computed(() => store.getters['cart/isInCart'](props.movie?.id))
 
-function toggleFavorite() {
+function toggleFavorite(event: MouseEvent) {
+  const isRemoving = isFavorited.value
+
   store.commit('favorites/toggleFavorite', props.movie)
+
+  if (!isRemoving) {
+    const button = (event.currentTarget as HTMLElement) || (event.target as HTMLElement)
+
+    const icon = button.querySelector('.heart-icon')
+    if (icon) {
+      icon.classList.add('animate')
+      setTimeout(() => icon.classList.remove('animate'), 300)
+    }
+
+    const rect = button.getBoundingClientRect()
+    confetti({
+      particleCount: 60,
+      spread: 80,
+      origin: {
+        x: (rect.left + rect.width / 2) / window.innerWidth,
+        y: (rect.top + rect.height / 2) / window.innerHeight,
+      },
+      scalar: 0.6,
+      zIndex: 9999,
+    })
+  }
 }
 </script>
 
@@ -79,14 +104,26 @@ function toggleFavorite() {
       class="favorite-btn"
       :class="{ 'is-favorited': isFavorited }"
       :aria-label="isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'"
-      @click="toggleFavorite"
+      @click="toggleFavorite($event)"
     >
-      <PhHeart :weight="isFavorited ? 'fill' : 'regular'" size="20" />
+      <PhHeart class="heart-icon" :weight="isFavorited ? 'fill' : 'regular'" size="20" />
     </button>
   </div>
 </template>
 
 <style scoped scss>
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .card {
   position: relative;
   background-color: var(--color-background-mute);
@@ -126,6 +163,12 @@ function toggleFavorite() {
 
   &.is-favorited {
     color: var(--color-danger);
+  }
+
+  .heart-icon {
+    &.animate {
+      animation: pop 0.3s ease;
+    }
   }
 }
 
