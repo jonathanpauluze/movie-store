@@ -176,7 +176,9 @@ function toggleFavorite(event: MouseEvent) {
   width: 100%;
   height: 100%;
   display: block;
+  aspect-ratio: 2 / 3;
   object-fit: cover;
+  background-color: var(--color-background-soft);
 }
 
 .info {

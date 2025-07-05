@@ -125,7 +125,9 @@ function getPoster(movie: Movie) {
   img {
     width: 40px;
     height: 60px;
+    aspect-ratio: 2 / 3;
     object-fit: cover;
+    background-color: var(--color-background-soft);
   }
 }
 

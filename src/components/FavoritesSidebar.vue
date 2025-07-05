@@ -127,8 +127,10 @@ function getPoster(path: string) {
 
   img {
     width: 40px;
-    height: 40px;
-    object-fit: contain;
+    height: 60px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    background-color: var(--color-background-soft);
   }
 
   .title {
