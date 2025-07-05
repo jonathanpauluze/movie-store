@@ -16,9 +16,6 @@ const emit = defineEmits<EmitType>()
 
 const store = useStore()
 const favorites = computed(() => store.state.favorites.items)
-const total = computed(() =>
-  favorites.value.reduce((sum: number, movie: Movie) => sum + getPrice(movie.id), 0),
-)
 
 function close() {
   emit('close')
@@ -84,12 +81,6 @@ function getPoster(path: string) {
           </div>
         </li>
       </ul>
-    </div>
-
-    <div class="sidebar-footer" v-if="favorites.length">
-      <div class="total">
-        Total: <strong>{{ formatCurrency(total) }}</strong>
-      </div>
     </div>
   </AppSidebar>
 </template>
@@ -177,18 +168,6 @@ function getPoster(path: string) {
     &:hover {
       color: var(--color-text);
     }
-  }
-}
-
-.sidebar-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  border-top: 1px solid var(--color-border);
-
-  .total {
-    font-size: 1.125rem;
-    font-weight: bold;
   }
 }
 
