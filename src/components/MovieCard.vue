@@ -20,19 +20,20 @@ const { resolve } = useGenres()
 const genres = computed(() => resolve(props.movie.genre_ids))
 const price = computed(() => formatCurrency(getPrice(props.movie.id)))
 const isFavorited = computed(() => store.getters['favorites/isFavorite'](props.movie.id))
+const imageUrl = computed(() => {
+  if (props.movie.poster_path) return `https://image.tmdb.org/t/p/w300${props.movie.poster_path}`
+
+  return new URL('@/assets/images/no-poster.png', import.meta.url).href
+})
 
 function toggleFavorite() {
   store.commit('favorites/toggleFavorite', props.movie)
-}
-
-function getPoster(path: string) {
-  return `https://image.tmdb.org/t/p/w300${path}`
 }
 </script>
 
 <template>
   <div class="card">
-    <img :src="getPoster(movie.poster_path)" :alt="movie.title" class="poster" />
+    <img :src="imageUrl" :alt="movie.title" class="poster" />
 
     <div class="info">
       <h3 class="title" :title="movie.title">{{ movie.title }}</h3>
@@ -109,7 +110,7 @@ function getPoster(path: string) {
 
 .poster {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
 }
