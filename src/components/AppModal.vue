@@ -15,7 +15,7 @@ const modalRef = ref<HTMLElement | null>(null)
 function onAfterEnter() {
   nextTick(() => {
     const focusable = modalRef.value?.querySelector<HTMLElement>(
-      'a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])',
+      'a, button:not(:disabled), textarea, input, select, [tabindex]:not([tabindex="-1"])',
     )
     focusable?.focus()
   })

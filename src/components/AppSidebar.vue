@@ -40,7 +40,7 @@ watch(
     if (open && sidebarRef.value) {
       await nextTick()
       const focusable = sidebarRef.value.querySelector<HTMLElement>(
-        'a, button, textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        'a, button:not(:disabled), textarea, input, select, [tabindex]:not([tabindex="-1"])',
       )
       focusable?.focus()
     }
