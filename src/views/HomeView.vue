@@ -125,7 +125,7 @@ onMounted(loadPopular)
 <template>
   <div>
     <section>
-      <h1>Filmes Populares</h1>
+      <h1>{{ search ? `Resultados para "${search}"` : 'Filmes Populares' }}</h1>
 
       <LoadingSpinner v-if="isLoading && movies.length === 0" />
 
